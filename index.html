@@ -203,28 +203,95 @@
             width: 100%;
         }
 
-        /* --- MOBILE OPTIMIERUNG --- */
-        @media (max-width: 800px) {
-            ul#habits {
-                /* Auf Tablets 2 Spalten */
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
+        /* =========================
+   MOBILE GARDEN OPTIMIERUNG
+   ========================= */
+@media (max-width: 600px) {
 
-        @media (max-width: 500px) {
-            .controls { flex-direction: column; }
-            input, #create-habit { width: 100%; box-sizing: border-box; }
-            
-            ul#habits {
-                /* Auf Handy 1 Spalte */
-                grid-template-columns: 1fr;
-            }
-            ul#habits li {
-                flex-direction: row; /* Auf Handy wieder nebeneinander */
-            }
-            ul#habits li span { margin-bottom: 0; }
-            ul#habits li button { width: auto; margin-left: 10px;}
-        }
+    /* Garten insgesamt ruhiger */
+    #garden {
+        min-height: 45vh;
+    }
+
+    /* Hauptbaum bleibt Fokus */
+    #tree {
+        margin-bottom: 4vh;
+        z-index: 2;
+    }
+
+    #tree::before {
+        width: 450%;
+        height: 280%;
+    }
+
+    /* Wolken: kleiner & weiter oben */
+    .cloud {
+        width: 80px;
+        height: 35px;
+        opacity: 0.8;
+        filter: blur(0.5px);
+    }
+
+    .cloud::before {
+        width: 40px;
+        height: 40px;
+        top: -20px;
+    }
+
+    .cloud::after {
+        width: 55px;
+        height: 55px;
+        top: -30px;
+    }
+
+    .c1 { left: 5%; top: 4vh; transform: scale(0.7); }
+    .c2 { left: 35%; top: 7vh; transform: scale(0.8); }
+    .c3 { display: none; } /* zu viel auf Mobile */
+    .c4 { left: 65%; top: 5vh; transform: scale(0.75); }
+
+    /* Büsche: weniger & kleiner */
+    .bush {
+        width: 55px;
+        height: 28px;
+        bottom: 6vh;
+        opacity: 0.85;
+    }
+
+    .bush::before,
+    .bush::after {
+        width: 40px;
+        height: 25px;
+    }
+
+    .b1 { left: 8%; transform: scale(0.7); }
+    .b2 { left: 28%; transform: scale(0.75); }
+    .b3 { right: 28%; transform: scale(0.75); }
+    .b4 { display: none; } /* auf Mobile zu viel */
+
+    /* Kleine Bäume: stark reduziert */
+    .small-tree {
+        height: 30px;
+        width: 8px;
+        bottom: 6.5vh;
+    }
+
+    .small-tree::before {
+        width: 40px;
+        height: 35px;
+    }
+
+    .t1 { left: 18%; transform: scale(0.7); }
+    .t2 { display: none; }
+    .t3 { display: none; }
+    .t4 { right: 18%; transform: scale(0.65); }
+
+    /* Blumen minimal halten */
+    .flower {
+        transform: scale(0.7);
+        bottom: 5vh;
+    }
+}
+
         /* --- HINTERGRUND-DEKO: BÜSCHE --- */
         .bush {
             position: absolute;
@@ -257,10 +324,10 @@
             bottom: 0;
         }
 
-        .b1 { left: 5%; transform: scale(0.8); }
+        .b1 { left: 4%; transform: scale(0.8); }
         .b2 { left: 25%; transform: scale(1); }
         .b3 { right: 25%; transform: scale(0.9); }
-        .b4 { right: 5%; transform: scale(0.75); }
+        .b4 { right: 4%; transform: scale(0.75); }
 
         /* --- HINTERGRUND-DEKO: KLEINE BÄUME --- */
         .small-tree {

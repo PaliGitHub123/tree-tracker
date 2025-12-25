@@ -89,19 +89,21 @@ function calculateTree (isDelete){
         if(treeWidth < 10 || habitsCounter === 0){
             treeWidth = 10;
             treeHeight = 50;
-        }
-        //console.log("multip: " + habitMultiplier);
-        if(isDelete){
-            treeWidth = treeWidth - 3;
-            treeHeight = treeHeight - 3;
         }else{
-            treeWidth = 3 + treeWidth;
-            treeHeight = 3 + treeHeight;
+            //console.log("multip: " + habitMultiplier);
+            if(isDelete){
+                treeWidth = treeWidth - 3;
+                treeHeight = treeHeight - 3;
+            }else{
+                treeWidth = 3 + treeWidth;
+                treeHeight = 3 + treeHeight;
         }
+        }
+        
         tree.style.width = treeWidth + "px";
         tree.style.height = treeHeight + "px";
 
-        //console.log(treeWidth, treeHeight);
+        //console.log(treeWidth, treeHeight, habitsCounter);
     }catch(exception){
         throw(exception);
     }
