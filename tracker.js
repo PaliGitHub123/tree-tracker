@@ -57,30 +57,58 @@ function createHabit(){
 
 habitList.addEventListener("click", function(e){
     if(e.target.tagName === "LI"){
-        e.target.classList.toggle("checked");
-        checkedHabits++;
-        e.target.id = "list" + checkedHabits;
-        calculateTree();
-        console.log(e.target);
+        if(!e.target.classList.contains("checked")){
+            e.target.classList.toggle("checked");
+            checkedHabits++;
+            e.target.id = "list" + checkedHabits;
+            calculateTree();
+            console.log(e.target);
+        }
     }
     
     if(e.target.id === "delete"){
+        habitsCounter--;
+
+        if(e.target.parentElement.classList.contains("checked")){
+            checkedHabits--;
+        }
+        calculateTree(true);
+
         e.target.parentElement.remove();
     }
 }, false);
 
-function calculateTree (){
+function calculateTree (isDelete){
+    console.log(checkedHabits, habitsCounter);
     if(checkedHabits > habitsCounter){
-        throw("All habits checked");
+        exception = "All habits checked";
+        throw(exception);
     }
 
-    if(checkedHabits > 0 && habitsCounter > 0){
-        habitMultiplier = checkedHabits/habitsCounter;
-    }else{
-        habitMultiplier = 1;
+    try{
+        if(checkedHabits > 0 && habitsCounter > 0){
+            habitMultiplier = 1/habitsCounter;
+        }else{
+            habitMultiplier = 1;
+        }
+
+        console.log("multip: " + habitMultiplier);
+        if(isDelete){
+            if(habitsCounter <= 2){
+                treeHeight = 100;
+                treeWidth = 20;
+            }else{
+                treeWidth = treeWidth - (treeWidth*habitMultiplier);
+                treeHeight = treeHeight - (treeHeight*habitMultiplier);
+                console.log(treeWidth, treeHeight);
+            }
+        }else{
+            treeWidth = (treeWidth*habitMultiplier) + treeWidth;
+            treeHeight = (treeHeight*habitMultiplier) + treeHeight;
+        }
+        tree.style.width = treeWidth + "px";
+        tree.style.height = treeHeight + "px";
+    }catch(exception){
+        throw(exception);
     }
-    treeWidth = (treeWidth*habitMultiplier) + treeWidth;
-    treeHeight = (treeHeight*habitMultiplier) + treeHeight;
-    tree.style.width = treeWidth + "px";
-    tree.style.height = treeHeight + "px";
 }
