@@ -1,35 +1,251 @@
 <!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
-<html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title></title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="">
-    </head>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Habit Garden</title>
     <style>
-        hr{
+        /* --- GRUNDLAYOUT --- */
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f4f4f9;
+            overflow-x: hidden;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- OBERE HÄLFTE: DER GARTEN --- */
+        #garden {
+            flex: 1; 
+            min-height: 50vh;
+            background: linear-gradient(to bottom, #87CEEB 0%, #E0F7FA 80%, #4CAF50 80%, #388E3C 100%);
+            position: relative;
+            display: flex;
+            align-items: flex-end; /* Ausrichtung am Boden */
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        /* --- DER BAUM (EICHE) --- */
+        #tree {
+            background: #8B4513 !important;
+            border-radius: 5px;
+            position: relative;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+            margin-bottom: 5vh; 
+            /* WICHTIG: Transition für sanftes Wachsen */
+            transition: width 0.5s ease, height 0.5s ease;
+            
+            /* Startwerte (werden von JS überschrieben, aber gut als Fallback) */
+            width: 15px; 
+            height: 60px;
+        }
+
+        /* Die Baumkrone */
+        #tree::before {
+            content: '';
+            position: absolute;
+            bottom: 90%; 
+            left: 50%;
+            transform: translateX(-50%);
+            /* Krone ist proportional zum Stamm */
+            width: 600%; 
+            height: 350%; 
+            background: radial-gradient(circle at 30% 30%, #4CAF50, #2E7D32);
+            border-radius: 50%;
+            box-shadow: inset -10px -10px 20px rgba(0,0,0,0.1), 
+                        5px 5px 15px rgba(0,0,0,0.2);
+            z-index: 1;
+            transition: all 0.5s ease;
+        }
+
+        /* Textur für den Stamm */
+        #tree::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: repeating-linear-gradient(90deg, transparent, transparent 5px, rgba(0,0,0,0.05) 5px, rgba(0,0,0,0.05) 7px);
+        }
+
+        /* --- BLUMEN (Deko) --- */
+        .flower {
+            position: absolute;
+            bottom: 8vh;
+            width: 15px;
+            height: 30px;
+            background: #2E7D32;
+            z-index: 0;
+        }
+        .flower::before {
+            content: '';
+            position: absolute;
+            top: -10px; left: -5px;
+            width: 25px; height: 25px;
+            border-radius: 50%;
+            background: radial-gradient(circle, yellow 20%, violet 21%);
+        }
+        .f1 { left: 10%; bottom: 6vh; transform: scale(0.8); }
+        .f2 { left: 20%; bottom: 9vh; }
+        .f2::before { background: radial-gradient(circle, white 20%, red 21%); }
+        .f3 { right: 20%; bottom: 7vh; transform: scale(1.1); }
+        .f3::before { background: radial-gradient(circle, yellow 20%, orange 21%); }
+        .f4 { right: 10%; bottom: 5vh; transform: scale(0.7); }
+
+        /* --- TRENNLINIE --- */
+        hr {
+            border: 0;
+            height: 4px;
+            background: #388E3C;
+            margin: 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            z-index: 10;
+        }
+
+        /* --- UNTERE HÄLFTE: HABITS --- */
+        #main {
+            flex: 0.8; /* Etwas weniger Platz als der Garten */
+            background-color: #388E3C;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-y: auto;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            width: 100%;
+            max-width: 600px;
+            justify-content: center;
+        }
+
+        input {
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 20px;
+            flex-grow: 1;
+            font-size: 1rem;
+        }
+
+        #create-habit {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* --- HABIT GRID (Optimiert für 8 Items) --- */
+        ul#habits {
+            list-style-type: none;
+            padding: 0;
+            width: 100%;
+            max-width: 900px; /* Breit genug für 4 Items */
+            display: grid;
+            /* Hier die Magie: Exakt 4 Spalten */
+            grid-template-columns: repeat(4, 1fr); 
+            gap: 15px;
+        }
+
+        ul#habits li {
+            background: white;
+            border: 1px solid #eee;
+            border-left: 5px solid #ccc;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column; /* Text oben, Button unten bei Bedarf */
+            justify-content: space-between;
+            align-items: center;
+            text-align: center;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+            min-height: 50px; /* Einheitliche Höhe */
+        }
+
+        ul#habits li:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        ul#habits li.checked {
+            border-left-color: #4CAF50;
+            background-color: #e8f5e9;
+            color: #666;
+            opacity: 0.8;
+        }
+
+        ul#habits li span {
+            margin-bottom: 10px;
+            word-break: break-word;
+        }
+
+        ul#habits li button {
+            background: #ff5252;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.7rem;
             width: 100%;
         }
 
-        ul{
-            list-style-type: none;
+        /* --- MOBILE OPTIMIERUNG --- */
+        @media (max-width: 800px) {
+            ul#habits {
+                /* Auf Tablets 2 Spalten */
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 500px) {
+            .controls { flex-direction: column; }
+            input, #create-habit { width: 100%; box-sizing: border-box; }
+            
+            ul#habits {
+                /* Auf Handy 1 Spalte */
+                grid-template-columns: 1fr;
+            }
+            ul#habits li {
+                flex-direction: row; /* Auf Handy wieder nebeneinander */
+            }
+            ul#habits li span { margin-bottom: 0; }
+            ul#habits li button { width: auto; margin-left: 10px;}
         }
     </style>
-    <body>
+</head>
+<body>
+
+    <div id="garden">
+        <div class="flower f1"></div>
+        <div class="flower f2"></div>
+        <div class="flower f3"></div>
+        <div class="flower f4"></div>
         <div id="tree"></div>
-        <hr>
-        <div id="main">
-            <button id="create-habit">Create habit</button>
-            <input type="text" placeholder="habit1" id="input-field">
-            <ul id="habits">
-            </ul>
+    </div>
+
+    <div id="main">
+        <div class="controls">
+            <input type="text" placeholder="Neuer Habit..." id="input-field">
+            <button id="create-habit">Hinzufügen</button>
         </div>
-        <script src="tracker.js"></script>
-    </body>
+        
+        <ul id="habits"></ul>
+    </div>
+
+   <script src="tracker.js"></script>
+</body>
 </html>
