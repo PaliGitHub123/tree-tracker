@@ -62,7 +62,7 @@ habitList.addEventListener("click", function(e){
             //checkedHabits++;
             //e.target.id = "list" + checkedHabits;
             calculateTree();
-            console.log(e.target);
+            //console.log(e.target);
         }else{
             e.target.removeAttribute("class");
             calculateTree(true);
@@ -92,11 +92,8 @@ function calculateTree (isDelete){
         }
         //console.log("multip: " + habitMultiplier);
         if(isDelete){
-            if(habitsCounter !== 0){
-                treeWidth = treeWidth - 3;
-                treeHeight = treeHeight - 3;
-            }
-
+            treeWidth = treeWidth - 3;
+            treeHeight = treeHeight - 3;
         }else{
             treeWidth = 3 + treeWidth;
             treeHeight = 3 + treeHeight;
@@ -104,7 +101,7 @@ function calculateTree (isDelete){
         tree.style.width = treeWidth + "px";
         tree.style.height = treeHeight + "px";
 
-        console.log(treeWidth, treeHeight);
+        //console.log(treeWidth, treeHeight);
     }catch(exception){
         throw(exception);
     }

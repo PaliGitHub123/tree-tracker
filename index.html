@@ -225,16 +225,140 @@
             ul#habits li span { margin-bottom: 0; }
             ul#habits li button { width: auto; margin-left: 10px;}
         }
+        /* --- HINTERGRUND-DEKO: BÜSCHE --- */
+        .bush {
+            position: absolute;
+            bottom: 7vh;
+            width: 80px;
+            height: 40px;
+            background: radial-gradient(circle at 30% 30%, #488d4b, #2e7d32);
+            border-radius: 50%;
+            z-index: 0;
+            opacity: 0.9;
+        }
+
+        .bush::before,
+        .bush::after {
+            content: '';
+            position: absolute;
+            background: inherit;
+            width: 60px;
+            height: 35px;
+            border-radius: 80%;
+        }
+
+        .bush::before {
+            left: -25px;
+            bottom: 0;
+        }
+
+        .bush::after {
+            right: -25px;
+            bottom: 0;
+        }
+
+        .b1 { left: 5%; transform: scale(0.8); }
+        .b2 { left: 25%; transform: scale(1); }
+        .b3 { right: 25%; transform: scale(0.9); }
+        .b4 { right: 5%; transform: scale(0.75); }
+
+        /* --- HINTERGRUND-DEKO: KLEINE BÄUME --- */
+        .small-tree {
+            position: absolute;
+            bottom: 8vh;
+            width: 10px;
+            height: 40px;
+            background: #6d4c41;
+            border-radius: 3px;
+            z-index: 0;
+        }
+
+        .small-tree::before {
+            content: '';
+            position: absolute;
+            bottom: 90%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 50px;
+            background: radial-gradient(circle, #81c784, #388e3c);
+            border-radius: 50%;
+        }
+
+        .t1 { left: 15%; transform: scale(0.8); }
+        .t2 { left: 35%; transform: scale(1); }
+        .t3 { right: 35%; transform: scale(0.9); }
+        .t4 { right: 15%; transform: scale(0.7); }
+
+
+        /* --- WOLKEN (STATISCH) --- */
+        .cloud {
+            position: absolute;
+            top: 8vh;
+            width: 120px;
+            height: 50px;
+            background: #ffffff;
+            border-radius: 50px;
+            opacity: 0.9;
+            z-index: 0;
+            filter: blur(0.3px);
+        }
+
+        .cloud::before,
+        .cloud::after {
+            content: '';
+            position: absolute;
+            background: #ffffff;
+            border-radius: 50%;
+        }
+
+        .cloud::before {
+            width: 60px;
+            height: 60px;
+            top: -30px;
+            left: 15px;
+        }
+
+        .cloud::after {
+            width: 80px;
+            height: 80px;
+            top: -40px;
+            right: 10px;
+        }
+
+        /* Verschiedene Positionen & Größen */
+        .c1 { top: 6vh; left: 10%; transform: scale(0.8); }
+        .c2 { top: 12vh; left: 30%; transform: scale(1); }
+        .c3 { top: 18vh; left: 55%; transform: scale(0.7); }
+        .c4 { top: 9vh; left: 75%; transform: scale(0.9); }
     </style>
 </head>
 <body>
 
     <div id="garden">
+                <!-- Wolken -->
+        <div class="cloud c1"></div>
+        <div class="cloud c2"></div>
+        <div class="cloud c3"></div>
+        <div class="cloud c4"></div>
+
         <div class="flower f1"></div>
         <div class="flower f2"></div>
         <div class="flower f3"></div>
         <div class="flower f4"></div>
         <div id="tree"></div>
+
+                <!-- Büsche -->
+        <div class="bush b1"></div>
+        <div class="bush b2"></div>
+        <div class="bush b3"></div>
+        <div class="bush b4"></div>
+
+        <!-- Kleine Bäume -->
+        <div class="small-tree t1"></div>
+        <div class="small-tree t2"></div>
+        <div class="small-tree t3"></div>
+        <div class="small-tree t4"></div>
     </div>
 
     <div id="main">
