@@ -8,7 +8,7 @@ const habitList = document.getElementById("habits");
 const input = document.getElementById("input-field");
 let habitsCounter = 0;
 //let checkedHabits = 0;
-let habitMultiplier = 1/6;
+//let habitMultiplier = 1/6;
 
 let exception;
 
@@ -86,20 +86,20 @@ function calculateTree (isDelete){
 
     try{
 
-        if(treeWidth < 10){
+        if(treeWidth < 10 || habitsCounter === 0){
             treeWidth = 10;
             treeHeight = 50;
         }
-        console.log("multip: " + habitMultiplier);
+        //console.log("multip: " + habitMultiplier);
         if(isDelete){
             if(habitsCounter !== 0){
-                treeWidth = treeWidth - (treeWidth*habitMultiplier);
-                treeHeight = treeHeight - (treeHeight*habitMultiplier);
+                treeWidth = treeWidth - 3;
+                treeHeight = treeHeight - 3;
             }
 
         }else{
-            treeWidth = (treeWidth*habitMultiplier) + treeWidth;
-            treeHeight = (treeHeight*habitMultiplier) + treeHeight;
+            treeWidth = 3 + treeWidth;
+            treeHeight = 3 + treeHeight;
         }
         tree.style.width = treeWidth + "px";
         tree.style.height = treeHeight + "px";
