@@ -13,6 +13,8 @@
             font-family: 'Segoe UI', sans-serif;
             background-color: #f4f4f9;
             overflow-x: hidden;
+            width: 100%;
+            max-width: 100vw;
         }
 
         body {
@@ -245,6 +247,7 @@
             display: grid;
             grid-template-columns: repeat(4, 1fr); 
             gap: 15px;
+            box-sizing: border-box;
         }
 
         ul#habits li {
@@ -266,6 +269,8 @@
             word-wrap: break-word;
             overflow-wrap: break-word;
             hyphens: auto;
+            max-width: 100%;
+            overflow: hidden;
         }
 
         ul#habits li:hover {
@@ -285,6 +290,8 @@
             word-break: break-word;
             width: 100%;
             line-height: 1.4;
+            max-width: 100%;
+            overflow-wrap: anywhere;
         }
 
         ul#habits li button {
@@ -382,7 +389,7 @@
             
             .f1 { left: 6%; bottom: 5vh; transform: scale(0.7); }
             .f2 { left: 26%; bottom: 8vh; transform: scale(0.75); }
-            .f3 { right: 16%; bottom: 6vh; transform: scale(0.85); }
+            .f3 { right: 26%; bottom: 6vh; transform: scale(0.85); }
             .f4 { right: 6%; bottom: 4vh; transform: scale(0.65); }
 
             /* Controls anpassen */
