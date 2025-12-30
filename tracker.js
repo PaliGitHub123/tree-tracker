@@ -50,6 +50,7 @@ function createHabit(){
         li.appendChild(delButton);
         habitsCounter++;
         input.value ="";
+        saveData();
     }catch (exception){
         throw(exception);
     }
@@ -63,22 +64,26 @@ habitList.addEventListener("click", function(e){
             //e.target.id = "list" + checkedHabits;
             calculateTree();
             //console.log(e.target);
+            saveData();
         }else{
             e.target.removeAttribute("class");
             calculateTree(true);
             e.target.id = "";
+            saveData();
         }
     }
     
     if(e.target.id === "delete"){
         habitsCounter--;
 
-        //if(e.target.parentElement.classList.contains("checked")){
+        if(e.target.parentElement.classList.contains("checked")){
            // checkedHabits--;
-        //}
-        calculateTree(true);
+           calculateTree(true);
+        }
+        
 
         e.target.parentElement.remove();
+        saveData();
     }
 }, false);
 
@@ -86,7 +91,7 @@ function calculateTree (isDelete){
 
     try{
 
-        if(treeWidth < 10 || habitsCounter === 0){
+        if(habitsCounter === 0){
             treeWidth = 10;
             treeHeight = 50;
         }else{
@@ -103,8 +108,26 @@ function calculateTree (isDelete){
         tree.style.width = treeWidth + "px";
         tree.style.height = treeHeight + "px";
 
+       saveTreeData();
         //console.log(treeWidth, treeHeight, habitsCounter);
     }catch(exception){
         throw(exception);
     }
 }
+
+function saveData(){
+    localStorage.setItem("data", habitList.innerHTML);
+}
+
+function saveTreeData(){
+    localStorage.setItem("tree-width", tree.style.width);
+    localStorage.setItem("tree-height", tree.style.height);
+}
+
+function showData(){
+    habitList.innerHTML = localStorage.getItem("data");
+    tree.style.width = localStorage.getItem("tree-width");
+    tree.style.height = localStorage.getItem("tree-height");
+    console.log(treeWidth);
+}
+showData();
