@@ -2,6 +2,8 @@
 const createHabitButton = document.getElementById("create-habit");
 const checkHabitButton = document.getElementById("check-habit");
 const deleteHabitButton = document.getElementById("delete-habit");
+const clearLocalStorageButton = document.getElementById("clear-local-storage");
+const mobileLocalStorageInfo = document.getElementById("mobile-clear-local-storage-text");
 
 //habit tracker
 const habitList = document.getElementById("habits");
@@ -25,6 +27,17 @@ tree.style.height = treeHeight + "px";
 tree.style.backgroundColor = treeBGColor;
 
 createHabitButton.addEventListener("click", createHabit);
+
+clearLocalStorageButton.addEventListener("click", function(){
+    localStorage.clear();
+});
+
+mobileLocalStorageInfo.addEventListener("click", function(){
+    if(window.confirm('Deletes all the data from the Habit Garden. You have to reload after confirming!')){
+        localStorage.clear();
+    };
+    
+})
 
 function createHabit(){
     if(input.value == ''){ 

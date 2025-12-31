@@ -316,11 +316,92 @@ body, html {
             width: 100%;
             margin-top: 8px;
         }
+        /* Style for clear-local-storage button */
+        #clear-local-storage {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(180deg, #ff5252 0%, #e53935 100%);
+            color: #fff;
+            border: none;
+            font-weight: 700;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+            cursor: pointer;
+            z-index: 60;
+        }
+
+        #clear-local-storage:hover .clear-local-storage-text {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.25);
+            visibility: visible;
+            transition-delay: 0.3s;
+        }
+
+        #clear-local-storage:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(229,57,53,0.15);
+        }
+
+
+        .clear-local-storage-text {
+            visibility: hidden;
+            padding: 0.25em 0.5em;
+            background-color: black;
+            color: #fff;
+            text-align: center;
+            border-radius: 0.25em;
+            white-space: nowrap;
+            
+            /* Position the tooltip */
+            position: absolute;
+            z-index: 1;
+            top: 100%;
+            right: 50%;
+            transition-property: visibility;
+            transition-delay: 0s;
+            }
+
+        /* Mobile helper button: hidden on desktop, shown on small screens
+           Positioned immediately to the left of the red '!' button */
+        #mobile-clear-local-storage-text {
+            position: absolute;
+            top: 12px;
+            right: 12px; /* 12px + 44px (button) + 8px gap */
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(180deg, #ff5252 0%, #e53935 100%);
+            color: #ffff;
+            border: none;
+            display: none; /* hidden by default (desktop) */
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+            cursor: pointer;
+            z-index: 60;
+            font-weight: 700;
+            font-size: 16px;
+        }
 
         /* =========================
            MOBILE OPTIMIERUNG
            ========================= */
         @media (max-width: 768px) {
+            #mobile-clear-local-storage-text {
+                display: flex;
+            }
+
+            #clear-local-storage {
+                display: none;
+            }
+
             /* Garten kompakter */
             #garden {
                 min-height: 40vh;
@@ -534,6 +615,12 @@ body, html {
     </div>
 
     <div id="main">
+        <button id="clear-local-storage">!
+            <span class="clear-local-storage-text">Deletes all the data from the Habit Garden</span>
+        </button>
+
+        <button id="mobile-clear-local-storage-text">!</button>
+
         <div class="controls">
             <input type="text" placeholder="Add habit" id="input-field">
             <button id="create-habit">Hinzufügen</button>
