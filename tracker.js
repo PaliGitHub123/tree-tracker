@@ -92,6 +92,12 @@ habitList.addEventListener("click", function(e){
     }
 }, false);
 
+input.addEventListener("keypress", function(event){
+    if(event.key === "Enter"){
+        createHabit();
+    }
+});
+
 function calculateTree (isDelete){
 
     try{
