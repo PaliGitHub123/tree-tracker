@@ -18,6 +18,7 @@ const tree = document.getElementById("tree");
 let treeWidth = 10
 let treeHeight = 50
 let treeBGColor = "green";
+const treeGrowth = 4.5;
 
 tree.style.width = treeWidth + "px";
 tree.style.height = treeHeight + "px";
@@ -78,6 +79,10 @@ habitList.addEventListener("click", function(e){
 
         if(e.target.parentElement.classList.contains("checked")){
            // checkedHabits--;
+           /*console.log("case check");
+           console.log(tree.style.height);
+           console.log(tree.style.width);*/
+
            calculateTree(true);
         }
         
@@ -97,12 +102,12 @@ function calculateTree (isDelete){
         }else{
             //console.log("multip: " + habitMultiplier);
             if(isDelete){
-                treeWidth = treeWidth - 3;
-                treeHeight = treeHeight - 3;
+                treeWidth = treeWidth - treeGrowth;
+                treeHeight = treeHeight - treeGrowth;
             }else{
-                treeWidth = 3 + treeWidth;
-                treeHeight = 3 + treeHeight;
-        }
+                treeWidth = treeGrowth + treeWidth;
+                treeHeight = treeGrowth + treeHeight;
+            }
         }
         
         tree.style.width = treeWidth + "px";
@@ -117,6 +122,7 @@ function calculateTree (isDelete){
 
 function saveData(){
     localStorage.setItem("data", habitList.innerHTML);
+    localStorage.setItem("habitsCounter", habitsCounter);
 }
 
 function saveTreeData(){
@@ -128,6 +134,10 @@ function showData(){
     habitList.innerHTML = localStorage.getItem("data");
     tree.style.width = localStorage.getItem("tree-width");
     tree.style.height = localStorage.getItem("tree-height");
-    console.log(treeWidth);
+    habitsCounter = localStorage.getItem("habitsCounter");
+
+    treeWidth = parseFloat(localStorage.getItem("tree-width")) || 10;
+    treeHeight = parseFloat(localStorage.getItem("tree-height")) || 50;
+    //console.log(treeWidth);
 }
 showData();
