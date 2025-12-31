@@ -140,7 +140,7 @@ function showData(){
     habitList.innerHTML = localStorage.getItem("data");
     tree.style.width = localStorage.getItem("tree-width");
     tree.style.height = localStorage.getItem("tree-height");
-    habitsCounter = localStorage.getItem("habitsCounter");
+    habitsCounter = Number(localStorage.getItem("habitsCounter")) || 0;
 
     treeWidth = parseFloat(localStorage.getItem("tree-width")) || 10;
     treeHeight = parseFloat(localStorage.getItem("tree-height")) || 50;
