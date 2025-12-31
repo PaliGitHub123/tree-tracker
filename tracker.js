@@ -141,3 +141,23 @@ function showData(){
     //console.log(treeWidth);
 }
 showData();
+
+let habitListChildren = new Array(habitList.children);
+
+
+function checkAndResetDaily(){
+    const lastResetDate = localStorage.getItem("last-reset-date");
+    const today = new Date().toDateString();
+    
+    if(lastResetDate !== today){
+        // Neuer Tag - reset alle habits
+        Array.from(habitList.children).forEach(element => {
+            element.classList.remove("checked");
+        });
+        localStorage.setItem("last-reset-date", today);
+        saveData();
+    }
+}
+
+showData();
+checkAndResetDaily(); // Nach dem Laden prüfen
