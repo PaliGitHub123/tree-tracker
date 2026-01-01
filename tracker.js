@@ -172,6 +172,13 @@ function checkAndResetDaily(){
         // Neuer Tag - reset alle habits
         Array.from(habitList.children).forEach(element => {
             element.classList.remove("checked");
+            tree.style.width = 10;
+            tree.style.height = 50;
+
+            treeWidth = 10;
+            treeHeight = 50;
+
+            saveTreeData();
         });
         localStorage.setItem("last-reset-date", today);
         saveData();
