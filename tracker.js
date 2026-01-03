@@ -147,6 +147,9 @@ function saveData(){
 function saveTreeData(){
     localStorage.setItem("tree-width", tree.style.width);
     localStorage.setItem("tree-height", tree.style.height);
+
+    localStorage.setItem("treeWidth", treeWidth);
+    localStorage.setItem("treeHeight", treeHeight);
 }
 
 function showData(){
@@ -155,8 +158,8 @@ function showData(){
     tree.style.height = localStorage.getItem("tree-height");
     habitsCounter = Number(localStorage.getItem("habitsCounter")) || 0;
 
-    treeWidth = parseFloat(localStorage.getItem("tree-width")) || 10;
-    treeHeight = parseFloat(localStorage.getItem("tree-height")) || 50;
+    treeWidth = parseFloat(localStorage.getItem("treeWidth")) || 10;
+    treeHeight = parseFloat(localStorage.getItem("treeHeight")) || 50;
     //console.log(treeWidth);
 }
 showData();
@@ -166,20 +169,23 @@ let habitListChildren = new Array(habitList.children);
 
 function checkAndResetDaily(){
     const lastResetDate = localStorage.getItem("last-reset-date");
-    const today = new Date().toDateString();
-    
+    const today = new Date("January 19, 2026").toDateString();
+    //console.log(lastResetDate, today)
     if(lastResetDate !== today){
         // Neuer Tag - reset alle habits
         Array.from(habitList.children).forEach(element => {
             element.classList.remove("checked");
-            tree.style.width = 10;
-            tree.style.height = 50;
-
-            treeWidth = 10;
-            treeHeight = 50;
-
-            saveTreeData();
         });
+        
+
+        treeWidth = 10;
+        treeHeight = 50;
+        
+        tree.style.width = treeWidth + "px";
+        tree.style.height = treeHeight + "px";
+        saveTreeData();
+
+        //console.log(tree.style.width, tree.style.height, treeHeight, treeWidth)
         localStorage.setItem("last-reset-date", today);
         saveData();
     }
