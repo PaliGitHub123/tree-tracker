@@ -169,7 +169,7 @@ let habitListChildren = new Array(habitList.children);
 
 function checkAndResetDaily(){
     const lastResetDate = localStorage.getItem("last-reset-date");
-    const today = new Date("January 19, 2026").toDateString();
+    const today = new Date().toDateString();
     //console.log(lastResetDate, today)
     if(lastResetDate !== today){
         // Neuer Tag - reset alle habits
