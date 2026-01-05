@@ -105,6 +105,32 @@ habitList.addEventListener("click", function(e){
     }
 }, false);
 
+habitList.addEventListener("dblclick", function(e){
+    if(e.target.tagName === "LI"){
+        const delButton = e.target.lastChild;
+        e.target.removeChild(delButton);
+        const habitValueBefore = e.target.innerText;
+
+        const input = document.createElement("input");
+        input.value = habitValueBefore;
+
+        const updateButton = document.createElement("button");
+        
+        updateButton.innerHTML = "Update";
+        updateButton.classList.toggle("updateButton");
+
+        e.target.innerHTML = "";
+        e.target.appendChild(input);
+        e.target.appendChild(updateButton);
+
+        updateButton.addEventListener("click", function(){
+            const parent = updateButton.parentNode;
+            parent.innerHTML = input.value;
+            parent.appendChild(delButton);
+        })
+    }
+})
+
 input.addEventListener("keypress", function(event){
     if(event.key === "Enter"){
         createHabit();
