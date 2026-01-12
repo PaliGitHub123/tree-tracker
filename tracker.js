@@ -9,18 +9,20 @@ const mobileLocalStorageInfo = document.getElementById("mobile-clear-local-stora
 const habitList = document.getElementById("habits");
 const input = document.getElementById("input-field");
 let habitsCounter = 0;
-//let checkedHabits = 0;
-//let habitMultiplier = 1/6;
+let checkedHabits = 0;
 
 let exception;
 
 //tree
 const tree = document.getElementById("tree");
 
-let treeWidth = 10
-let treeHeight = 50
+let treeWidth = 5
+let treeHeight = 10
+
+let MAXtreeWidth = 45;
+let MAXtreeHeight = 93;
+
 let treeBGColor = "green";
-const treeGrowth = 4.5;
 
 tree.style.width = treeWidth + "px";
 tree.style.height = treeHeight + "px";
@@ -74,13 +76,14 @@ habitList.addEventListener("click", function(e){
     if(e.target.tagName === "LI"){
         if(!e.target.classList.contains("checked")){
             e.target.classList.toggle("checked");
-            //checkedHabits++;
-            //e.target.id = "list" + checkedHabits;
+            checkedHabits++;
+            e.target.id = "list" + checkedHabits;
             calculateTree();
             //console.log(e.target);
             saveData();
         }else{
             e.target.removeAttribute("class");
+            checkedHabits--;
             calculateTree(true);
             e.target.id = "";
             saveData();
@@ -91,12 +94,12 @@ habitList.addEventListener("click", function(e){
         habitsCounter--;
 
         if(e.target.parentElement.classList.contains("checked")){
-           // checkedHabits--;
+            checkedHabits--;
            /*console.log("case check");
            console.log(tree.style.height);
            console.log(tree.style.width);*/
-
-           calculateTree(true);
+            saveData();
+            calculateTree(true);
         }
         
 
@@ -137,22 +140,16 @@ input.addEventListener("keypress", function(event){
     }
 });
 
-function calculateTree (isDelete){
+function calculateTree (){
 
     try{
 
-        if(habitsCounter === 0){
-            treeWidth = 10;
-            treeHeight = 50;
+        if(habitsCounter === 0 || checkedHabits === 0){
+            treeWidth = 5;
+            treeHeight = 10;
         }else{
-            //console.log("multip: " + habitMultiplier);
-            if(isDelete){
-                treeWidth = treeWidth - treeGrowth;
-                treeHeight = treeHeight - treeGrowth;
-            }else{
-                treeWidth = treeGrowth + treeWidth;
-                treeHeight = treeGrowth + treeHeight;
-            }
+            treeWidth = MAXtreeWidth*(checkedHabits/habitsCounter);
+            treeHeight = MAXtreeHeight*(checkedHabits/habitsCounter);
         }
         
         tree.style.width = treeWidth + "px";
@@ -168,6 +165,7 @@ function calculateTree (isDelete){
 function saveData(){
     localStorage.setItem("data", habitList.innerHTML);
     localStorage.setItem("habitsCounter", habitsCounter);
+    localStorage.setItem("checkedHabits", checkedHabits);
 }
 
 function saveTreeData(){
@@ -183,6 +181,7 @@ function showData(){
     tree.style.width = localStorage.getItem("tree-width");
     tree.style.height = localStorage.getItem("tree-height");
     habitsCounter = Number(localStorage.getItem("habitsCounter")) || 0;
+    checkedHabits = Number(localStorage.getItem("checkedHabits")) || 0;
 
     treeWidth = parseFloat(localStorage.getItem("treeWidth")) || 10;
     treeHeight = parseFloat(localStorage.getItem("treeHeight")) || 50;
@@ -204,8 +203,8 @@ function checkAndResetDaily(){
         });
         
 
-        treeWidth = 10;
-        treeHeight = 50;
+        treeWidth = 5;
+        treeHeight = 10;
         
         tree.style.width = treeWidth + "px";
         tree.style.height = treeHeight + "px";
