@@ -44,12 +44,12 @@ mobileLocalStorageInfo.addEventListener("click", function(){
 function createHabit(){
     if(input.value == ''){ 
         exception = "Missing input value";
-        throw exception;
+        throw new Error(exception);
     }
 
     if(habitsCounter === 8){
         exception = "Maximum amount of habits reached";
-        throw exception;
+        throw new Error(exception);
     }
 
     try{
@@ -68,7 +68,7 @@ function createHabit(){
         input.value ="";
         saveData();
     }catch (exception){
-        throw(exception);
+        throw new Error(exception);
     }
 }
 
@@ -183,8 +183,8 @@ function showData(){
     habitsCounter = Number(localStorage.getItem("habitsCounter")) || 0;
     checkedHabits = Number(localStorage.getItem("checkedHabits")) || 0;
 
-    treeWidth = parseFloat(localStorage.getItem("treeWidth")) || 10;
-    treeHeight = parseFloat(localStorage.getItem("treeHeight")) || 50;
+    treeWidth = parseFloat(localStorage.getItem("treeWidth")) || 5;
+    treeHeight = parseFloat(localStorage.getItem("treeHeight")) || 10;
     //console.log(treeWidth);
 }
 showData();
@@ -202,7 +202,7 @@ function checkAndResetDaily(){
             element.classList.remove("checked");
         });
         
-
+        checkedHabits = 0;
         treeWidth = 5;
         treeHeight = 10;
         
