@@ -110,12 +110,12 @@ habitList.addEventListener("click", function(e){
 }, false);
 
 habitList.addEventListener("dblclick", function(e){
-    if(e.dblClickState){
+    if(dblClickState){
         exception = "Habit already dblclicked!";
         throw new Error(exception);
     } 
     if(e.target.tagName === "LI"){
-        e.dblClickState = true;
+        dblClickState = true;
         const delButton = e.target.lastChild;
         e.target.removeChild(delButton);
         const habitValueBefore = e.target.innerText;
@@ -136,7 +136,7 @@ habitList.addEventListener("dblclick", function(e){
             const parent = updateButton.parentNode;
             parent.innerHTML = input.value;
             parent.appendChild(delButton);
-            e.dblClickState = false;
+            dblClickState = false;
         })
     }
 })
