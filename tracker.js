@@ -14,6 +14,10 @@ let checkedHabits = 0;
 let exception;
 let dblClickState = false;
 
+let delButton = document.createElement("button");
+delButton.innerText = "Delete";
+delButton.id = "delete";
+
 //tree
 const tree = document.getElementById("tree");
 
@@ -57,14 +61,9 @@ function createHabit(){
         //list
         let li = document.createElement("li");
 
-        //delete button
-        let delButton = document.createElement("button");
-        delButton.innerText = "Delete";
-        delButton.id = "delete";
-
         li.innerHTML = input.value;
         habitList.appendChild(li);
-        li.appendChild(delButton);
+        li.appendChild(delButton.cloneNode(true));
         habitsCounter++;
         input.value ="";
         saveData();
@@ -78,7 +77,6 @@ habitList.addEventListener("click", function(e){
         if(!e.target.classList.contains("checked")){
             e.target.classList.toggle("checked");
             checkedHabits++;
-            e.target.id = "list" + checkedHabits;
             calculateTree();
             //console.log(e.target);
             saveData();
@@ -86,7 +84,6 @@ habitList.addEventListener("click", function(e){
             e.target.removeAttribute("class");
             checkedHabits--;
             calculateTree(true);
-            e.target.id = "";
             saveData();
         }
     }
@@ -107,42 +104,52 @@ habitList.addEventListener("click", function(e){
         e.target.parentElement.remove();
         saveData();
     }
+
+    if(e.target.classList.contains("updateButton")){
+        const input = e.target.previousSibling;
+        const parent = e.target.parentNode;
+        parent.innerHTML = (input.value) ? input.value : "";
+        parent.appendChild(delButton.cloneNode(true));
+        dblClickState = false;
+        saveData();
+    }
 }, false);
 
+const updateButton = document.createElement("button");
+updateButton.innerHTML = "Update";
+updateButton.classList.toggle("updateButton");
+
+const updateInput = document.createElement("input");
+
+
 habitList.addEventListener("dblclick", function(e){
-    if(dblClickState){
-        exception = "Habit already dblclicked!";
-        throw new Error(exception);
-    } 
-    if(e.target.tagName === "LI"){
-        dblClickState = true;
-        const delButton = e.target.lastChild;
-        e.target.removeChild(delButton);
-        const habitValueBefore = e.target.innerText;
+    console.log("dblclick fired");
+    console.log("dblClickState:", dblClickState, typeof dblClickState);
+    console.log("target tag:", e.target.tagName);
 
-        const input = document.createElement("input");
-        input.value = habitValueBefore;
-
-        const updateButton = document.createElement("button");
-        
-        updateButton.innerHTML = "Update";
-        updateButton.classList.toggle("updateButton");
-
-        e.target.innerHTML = "";
-        e.target.appendChild(input);
-        e.target.appendChild(updateButton);
-
-        updateButton.addEventListener("click", function(){
-            const parent = updateButton.parentNode;
-            parent.innerHTML = input.value;
-            parent.appendChild(delButton);
-            dblClickState = false;
-        })
+    if(dblClickState === true){
+        console.log(dblClickState)
+        return;
+    }
+    if(e.target.tagName === "LI" && dblClickState === false){
+        console.log("inside LI block");
+        let habitButton = e.target.lastChild;
+        console.log("lastChild:", habitButton, habitButton.id);
+        if(habitButton.id === "delete"){
+            dblClickState = true;
+            e.target.removeChild(habitButton);
+            const habitValueBefore = e.target.innerText;
+            updateInput.value = habitValueBefore;
+            e.target.innerHTML = "";
+            e.target.appendChild(updateInput);
+            e.target.appendChild(updateButton);
+            saveData();
+        }
     }
 })
 
-input.addEventListener("keypress", function(event){
-    if(event.key === "Enter"){
+input.addEventListener("keypress", function(e){
+    if(e.key === "Enter"){
         createHabit();
     }
 });
@@ -173,6 +180,7 @@ function saveData(){
     localStorage.setItem("data", habitList.innerHTML);
     localStorage.setItem("habitsCounter", habitsCounter);
     localStorage.setItem("checkedHabits", checkedHabits);
+    localStorage.setItem("dblClickState", dblClickState);
 }
 
 function saveTreeData(){
@@ -192,7 +200,7 @@ function showData(){
 
     treeWidth = parseFloat(localStorage.getItem("treeWidth")) || 5;
     treeHeight = parseFloat(localStorage.getItem("treeHeight")) || 10;
-    //console.log(treeWidth);
+    dblClickState = localStorage.getItem("dblClickState") === "true";
 }
 showData();
 
@@ -208,7 +216,7 @@ function checkAndResetDaily(){
         Array.from(habitList.children).forEach(element => {
             element.classList.remove("checked");
         });
-        
+        dblClickState = false;
         checkedHabits = 0;
         treeWidth = 5;
         treeHeight = 10;
