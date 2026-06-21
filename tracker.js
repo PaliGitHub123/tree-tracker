@@ -61,7 +61,7 @@ function createHabit(){
         //list
         let li = document.createElement("li");
 
-        li.textContent = input.value;
+        li.innerHTML = input.value;
         habitList.appendChild(li);
         li.appendChild(delButton.cloneNode(true));
         habitsCounter++;
@@ -172,7 +172,7 @@ habitList.addEventListener("click", function(e){
     if(e.target.classList.contains("updateButton")){
         const input = e.target.previousSibling;
         const parent = e.target.parentNode;
-        parent.textContent = (input.value) ? input.value : "";
+        parent.innerHTML = (input.value) ? input.value : "";
         parent.appendChild(delButton.cloneNode(true));
         dblClickState = false;
         saveData();
@@ -180,7 +180,7 @@ habitList.addEventListener("click", function(e){
 }, false);
 
 const updateButton = document.createElement("button");
-updateButton.textContent = "Update";
+updateButton.innerHTML = "Update";
 updateButton.classList.toggle("updateButton");
 
 const updateInput = document.createElement("input");
@@ -204,7 +204,7 @@ habitList.addEventListener("dblclick", function(e){
             e.target.removeChild(habitButton);
             const habitValueBefore = e.target.innerText;
             updateInput.value = habitValueBefore;
-            e.target.textContent = "";
+            e.target.innerHTML = "";
             e.target.appendChild(updateInput);
             e.target.appendChild(updateButton);
             saveData();
@@ -241,7 +241,7 @@ function calculateTree (){
 }
 
 function saveData(){
-    localStorage.setItem("data", habitList.textContent);
+    localStorage.setItem("data", habitList.innerHTML);
     localStorage.setItem("habitsCounter", habitsCounter);
     localStorage.setItem("checkedHabits", checkedHabits);
     localStorage.setItem("dblClickState", dblClickState);
@@ -256,7 +256,7 @@ function saveTreeData(){
 }
 
 function showData(){
-    habitList.textContent = localStorage.getItem("data");
+    habitList.innerHTML = localStorage.getItem("data");
     tree.style.width = localStorage.getItem("tree-width");
     tree.style.height = localStorage.getItem("tree-height");
     habitsCounter = Number(localStorage.getItem("habitsCounter")) || 0;
