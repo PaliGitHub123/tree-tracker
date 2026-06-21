@@ -72,6 +72,70 @@ function createHabit(){
     }
 }
 
+//wasser tracker
+const waterIncreaseButton = document.getElementById("water-increase");
+const waterDecreaseButton = document.getElementById("water-decrease");
+const flowers = document.querySelectorAll(".flower");
+const waterSegments = document.querySelectorAll(".water-segment");
+
+let waterLevel = 0;
+let MAXwaterLevel = 6; // 6 Abschnitte a 0,5 Liter = 3 Liter
+
+let baseFlowerHeight = 30;
+let MAXflowerHeight = 80;
+
+let baseFlowerWidth = 15;
+let MAXflowerWidth = 30;
+
+function updateFlowers(){
+    let ratio = (waterLevel/5) / MAXwaterLevel;
+    let newHeight = baseFlowerHeight + (MAXflowerHeight - baseFlowerHeight) * ratio;
+    let newWidth = baseFlowerWidth + (MAXflowerWidth - baseFlowerWidth) * ratio;
+
+    flowers.forEach(function(flower){
+        flower.style.height = newHeight + "px";
+        flower.style.width = newWidth + "px";
+    });
+
+    updateWaterBar();
+    saveWaterData();
+}
+
+function updateWaterBar(){
+    waterSegments.forEach(function(segment, index){
+        if(index < waterLevel){
+            segment.classList.add("filled");
+        }else{
+            segment.classList.remove("filled");
+        }
+    });
+}
+
+function saveWaterData(){
+    localStorage.setItem("waterLevel", waterLevel);
+}
+
+function showWaterData(){
+    waterLevel = Number(localStorage.getItem("waterLevel")) || 0;
+    updateFlowers();
+}
+
+waterIncreaseButton.addEventListener("click", function(){
+    if(waterLevel < MAXwaterLevel){
+        waterLevel++;
+        updateFlowers();
+    }
+});
+
+waterDecreaseButton.addEventListener("click", function(){
+    if(waterLevel > 0){
+        waterLevel--;
+        updateFlowers();
+    }
+});
+
+showWaterData();
+
 habitList.addEventListener("click", function(e){
     if(e.target.tagName === "LI"){
         if(!e.target.classList.contains("checked")){
@@ -224,6 +288,10 @@ function checkAndResetDaily(){
         tree.style.width = treeWidth + "px";
         tree.style.height = treeHeight + "px";
         saveTreeData();
+
+        // Wasserstand zurücksetzen
+        waterLevel = 0;
+        updateFlowers();
 
         //console.log(tree.style.width, tree.style.height, treeHeight, treeWidth)
         localStorage.setItem("last-reset-date", today);

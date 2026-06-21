@@ -336,6 +336,99 @@ body, html {
             flex-grow: 1;
             font-size: 0.89rem;
         }
+        /* --- WASSER TRACKER --- */
+        #water-tracker {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            width: 124px;
+            z-index: 60;
+        }
+
+        .water-controls {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        #water-increase,
+        #water-decrease {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            border: none;
+            background:  #0d47a1;
+            color: #fff;
+            font-weight: 700;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            transition: transform 0.15s ease;
+            flex-shrink: 0;
+        }
+
+        #water-increase:hover,
+        #water-decrease:hover {
+            transform: translateY(-2px);
+        }
+
+        #watering-can-icon {
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        #watering-can-icon svg {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 2px 3px rgba(0,0,0,0.35));
+        }
+
+        /* Segmentierte Wasserbalken-Anzeige (1 Segment = 0,5 Liter) */
+        #bar {
+            display: flex;
+            gap: 2px;
+            width: 100%;
+            height: 14px;
+            padding: 2px;
+            background: rgba(255,255,255,0.3);
+            border: 1px solid rgba(255,255,255,0.7);
+            border-radius: 8px;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.25);
+        }
+
+        #main-div-bar{
+            margin-top: -15px;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            gap: 70px;
+            color: #0d47a1;
+        }
+
+        .water-segment {
+            flex: 1;
+            height: 100%;
+            border-radius: 3px;
+            background: rgba(13,71,161,0.15);
+            transition: background 0.3s ease;
+        }
+
+        .water-segment.filled {
+            background: linear-gradient(180deg, #64B5F6 0%, #1565C0 100%);
+        }
+
         /* Style for clear-local-storage button */
         #clear-local-storage {
             position: absolute;
@@ -416,6 +509,22 @@ body, html {
         @media (max-width: 768px) {
             #mobile-clear-local-storage-text {
                 display: flex;
+            }
+
+            #water-tracker {
+                width: 112px;
+            }
+
+            #water-increase,
+            #water-decrease {
+                width: 34px;
+                height: 34px;
+                font-size: 18px;
+            }
+
+            #watering-can-icon {
+                width: 26px;
+                height: 26px;
             }
 
             #clear-local-storage {
@@ -635,6 +744,32 @@ body, html {
     </div>
 
     <div id="main">
+        <div id="water-tracker">
+            <div class="water-controls">
+                <button id="water-decrease" aria-label="Wasserstand verringern">-</button>
+                <div id="watering-can-icon">
+                    <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M14 18 Q7 8 18 5" fill="none" stroke="#0d47a1" stroke-width="4" stroke-linecap="round"/>
+                        <rect x="9" y="18" width="29" height="20" rx="6" fill="#2196F3" stroke="#0d47a1" stroke-width="2"/>
+                        <path d="M37 22 L57 13 L59 17 L41 28 Z" fill="#2196F3" stroke="#0d47a1" stroke-width="2"/>
+                    </svg>
+                </div>
+                <button id="water-increase" aria-label="Wasserstand erhöhen">+</button>
+            </div>
+             <div id="bar">
+                    <div class="water-segment"></div>
+                    <div class="water-segment"></div>
+                    <div class="water-segment"></div>
+                    <div class="water-segment"></div>
+                    <div class="water-segment"></div>
+                    <div class="water-segment"></div>
+                </div>
+            <div id="main-div-bar">
+                <p>0L</p>
+                <p>3L</p>
+            </div>
+        </div>
+
         <button id="clear-local-storage">!
             <span class="clear-local-storage-text">Deletes all the data from the Habit Garden</span>
         </button>
