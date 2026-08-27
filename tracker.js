@@ -10,6 +10,7 @@ const habitList = document.getElementById("habits");
 const input = document.getElementById("input-field");
 let habitsCounter = 0;
 let checkedHabits = 0;
+let streak = 0;
 
 let exception;
 let dblClickState = false;
@@ -17,6 +18,10 @@ let dblClickState = false;
 let delButton = document.createElement("button");
 delButton.innerText = "Delete";
 delButton.id = "delete";
+
+let streakParagraph = document.createElement("p");
+streakParagraph.innerHTML = streak;
+streakParagraph.id = "streak"
 
 //tree
 const tree = document.getElementById("tree");
@@ -60,10 +65,10 @@ function createHabit(){
     try{
         //list
         let li = document.createElement("li");
-
         li.innerHTML = input.value;
         habitList.appendChild(li);
         li.appendChild(delButton.cloneNode(true));
+        li.appendChild(streakParagraph.cloneNode(true))
         habitsCounter++;
         input.value ="";
         saveData();
@@ -176,6 +181,11 @@ habitList.addEventListener("click", function(e){
         parent.appendChild(delButton.cloneNode(true));
         dblClickState = false;
         saveData();
+    }
+
+    if(e.target.id === "streak"){
+        streak++;
+        streakParagraph = streak;
     }
 }, false);
 
